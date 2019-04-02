@@ -1,0 +1,819 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="container">
+    <!-- Modal -->
+    <div class="modal fade" id="ViewModal" tabindex="-1" role="dialog" aria-labelledby="exampleLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title"><b>Thông tin chi tiết</b></h3>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <b>Họ Và Tên:</b><br>
+                            <p id="ITSupNameV"></p>
+                        </div>
+                        <div class="col-md-12">
+                            <b>Số Điện Thoại:</b><br>
+                            <p id="ITPhoneV"></p>
+                        </div>
+                        <div class="col-md-12">
+                            <b>Tên Đăng Nhập:</b><br>
+                            <p id="ITUsernameV"></p>
+                        </div>
+                        @*<div class="col-md-12">
+                            <b>Mật Khẩu:</b><br>
+                            <p id="ITPassV"></p>
+                        </div>*@
+                        <div class="col-md-12">
+                            <b>Email:</b><br>
+                            <p id="ITEmailV"></p>
+                        </div>
+                        <div class="col-md-12">
+                            <b>Địa Chỉ Thường Trú:</b><br>
+                            <p id="ITAddressV"></p>
+                        </div>
+                        <div class="col-md-12">
+                            <b>Kinh Nghiệm Làm Việc:</b><br>
+                            <p id="ITExpV"></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<input type="hidden" id="companyHidden" />
+<form onsubmit="CreateITSup(); return false">
+    <div class="container">
+        <!-- Modal -->
+        <div class="modal fade2" id="CreateModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3 class="modal-title" id="exampleModalLabel"><b>Tạo mới nhân viên</b></h3>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="col-md-6">
+                                    <b>Quyền Của Tài Khoản:</b><br>
+                                    <select class="form-control select2" style="width: 100%;" disabled="disabled" id="comboRole"></select>
+                                </div>
+                                <div class="col-md-6">
+                                    <b>Tên Đăng Nhập:</b><br>
+                                    <input type="text" class="form-control" id="userNameC" />
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="col-md-6" style="margin-top: 10px">
+                                    <b>Mật Khẩu:</b><br>
+                                    <input type="password" class="form-control" id="passC" />
+                                </div>
+                                <div class="col-md-6" style="margin-top: 10px">
+                                    <b>Họ Và Tên:</b><br>
+                                    <input type="text" class="form-control" id="nameC" />
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="col-md-6" style="margin-top: 10px">
+                                    <b>Số Điện Thoại:</b><br>
+                                    <input type="text" class="form-control" id="phoneC" />
+                                </div>
+                                <div class="col-md-6" style="margin-top: 10px">
+                                    <b>Email:</b><br>
+                                    <input type="text" class="form-control" id="emailC" />
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="col-md-6" style="margin-top: 10px">
+                                    <b>Địa Chỉ Thường Trú:</b><br>
+                                    <input type="text" class="form-control" id="addressC" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">Tạo Mới</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="showRole(); clearModal();">Đóng</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+<div class="modal fade" id="EditModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" style="overflow-y:auto">
+    <div class="modal-dialog" role="document">
+        <form onsubmit="UpdateITSup(); return false">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title"><b>Cập nhật thông tin</b></h3>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <input type="hidden" id="id" />
+                        <input type="hidden" id="userNameEUp" />
+                        <div class="col-md-6">
+                            <b>Quyền Của Tài Khoản:</b><br>
+                            <select id="comboRoleEdit" class="form-control select2" style="width: 100%;" disabled="disabled"></select>
+                        </div>
+                        <div class="col-md-6">
+                            <b>Tên Đăng Nhập:</b><br>
+                            <input type="text" class="form-control" id="userNameE" />
+                        </div>
+                        <div class="col-md-6" style="margin-top: 10px">
+                            <b>Mật Khẩu:</b><br>
+                            <input type="password" class="form-control" id="passE" disabled/>
+                        </div>
+                        <div class="col-md-6" style="margin-top: 10px">
+                            <b>Họ Và Tên:</b><br>
+                            <input type="text" class="form-control" id="nameE" />
+                        </div>
+                        <div class="col-md-6" style="margin-top: 10px">
+                            <b>Số Điện Thoại:</b><br>
+                            <input type="text" class="form-control" id="phoneE" />
+                        </div>
+                        <div class="col-md-6" style="margin-top: 10px">
+                            <b>Email:</b><br>
+                            <input type="text" class="form-control" id="emailE" />
+                        </div>
+                        <div class="col-md-6" style="margin-top: 10px">
+                            <b>Địa Chỉ Thường Trú:</b><br>
+                            <input type="text" class="form-control" id="addressE" />
+                        </div>
+                        <div class="col-md-12" style="margin-top: 20px">
+                            <button type="button" class="btn btn-primary fa fa-gear pull-right" data-toggle="modal" data-target="" onclick="showCreateServiceModal()"><font face="verdana"> Tùy Chỉnh Kinh Nghiệm</button>
+                            <table id="service-table" class="table table-bordered table-hover" cellspacing="0" style="table-layout: auto;">
+                                <thead>
+                                    <tr>
+                                        <th><label>Tên Loại Dịch Vụ</label></th>
+                                        <th><label>Thời Gian Làm Việc</label></th>
+                                        <th><label>Xóa</label></th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">Cập Nhật</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="modal fade" id="CreateServiceModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document" style="width:45%!important">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title"><b>Kinh nghiệm Làm Việc</b></h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <input type="hidden" id="idAdd" />
+                    <input type="hidden" id="idSerRemove" />
+                    <div class="col-md-12">
+                        <b>Tên Loại Dịch Vụ:</b><br>
+                        <select class="form-control select2" style="width: 100%;" id="ser"></select>
+                    </div>
+                    <div class="col-md-12" style="margin-top: 10px">
+                        <b>Thời Gian làm Việc:</b><br>
+                        <input type="text" class="form-control" id="monthExp">
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" onclick="AddSkill(); hideCreateServiceModal();">Lưu</button>
+                <button type="button" class="btn btn-secondary" onclick="hideCreateServiceModal()">Đóng</button>
+            </div>
+        </div>
+    </div>
+</div>
+<style>
+
+    .city {
+        background-color: azure;
+        color: black;
+        padding: 1%;
+        border-left: solid cadetblue;
+        width: 100%;
+        font-family: Arial;
+    }
+
+    p.one {
+        margin-top: 5%;
+        padding: 2%;
+        border-top: 1px solid lightgrey;
+        width: 100%;
+    }
+</style>
+<div class="row col-md-12">
+    <h3 class="city">Quản Lý Nhân Viên</h3>
+</div>
+<div class="row col-md-12">
+    <table id="detail-table" class="table table-hover" cellspacing="0" style="table-layout: auto">
+        <thead>
+            <tr>
+                <th><label>STT</label></th>
+                <th><label>Tên Nhân Viên</label></th>
+                <th><label>Tài Khoản</label></th>
+                <th><label>Số Điện Thoại</label></th>
+                <th><label>Trạng Thái</label></th>
+                <th><label>Tùy Chọn</label></th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+    <div class="NewThing">
+        <button type="button" class="btn btn-primary fa fa-plus" style="float:right;margin-top:15px;" data-toggle="modal" data-target="" onclick="showCreateModal()"><font face="verdana"> Tạo Nhân Viên</button>
+    </div>
+</div>
+<link href="//cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css" rel="stylesheet" />
+@section scripts {
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="https://cdn.rawgit.com/asvd/dragscroll/master/dragscroll.js"></script>
+    <script type="text/javascript" src="~/AdminLTE/bower_components/select2/dist/js/select2.js"></script>
+    <link href="~/AdminLTE/bower_components/select2/dist/css/select2.css" rel="stylesheet" />
+    <script src="~/AdminLTE/bower_components/select2/dist/js/select2.js"></script>
+    <script>
+        $(document).ready(function() {
+            loadITSup();
+            showRole();
+            $('#CreateServiceModal').on('show.bs.modal', function () {
+                $(this).find('.modal-dialog').css({
+                    width: '90%',
+                    height: 'auto',
+                    'max-height': '100%'
+                });
+            });
+            showService();
+        });
+        $('#comboRole').select2({
+            dropdownParent: $('#CreateModal'),
+        });
+        function loadITSup() {
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("GetAllITSupporter", "ITSupporter")',
+                data: {
+                },
+                success: function (result) {
+                    initDatatable(result.result.ObjReturn);
+                },
+                error: function(error) {
+                    showMessage("Cõ lỗi xảy ra. Vui lòng thử lại sau.", "error", "OK");
+                }
+            });
+        }
+
+        function loadSkill(iddd) {
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("ViewSkillITSupporter", "ITSupporter")',
+                data: {
+                    itSupporter_id: iddd
+                },
+                success: function (result) {
+
+                    initServiceDatatable(result.result.ObjReturn);
+                },
+                error: function(error) {
+                    showMessage("Cõ lỗi xảy ra. Vui lòng thử lại sau.", "error", "OK");
+                }
+            });
+        }
+
+        function initDatatable(data) {
+            if (data == null) {
+                $('#detail-table').dataTable().fnClearTable();
+            }
+            $("#detail-table").dataTable().fnDestroy();
+            $("#detail-table").dataTable({
+                stateSave: true,
+                "bFilter": true,
+                "bSort": false,
+                "data": data,
+                "bRetrieve": true,
+                "bScrollCollapse": true,
+                "bProcessing": true,
+                "oLanguage": {
+                    "sSearch": "Tìm kiếm:",
+                    "sSearchPlaceholder": "",
+                    "sZeroRecords": "Không có dữ liệu phù hợp",
+                    "sInfo": "Hiển thị từ _START_ đến _END_ trên tổng số _TOTAL_ dòng",
+                    "sEmptyTable": "Không có dữ liệu",
+                    "sInfoFiltered": " - lọc ra từ _MAX_ dòng",
+                    "sLengthMenu": "Hiển thị _MENU_ dòng",
+                    "sProcessing": "Đang xử lý...",
+                    "oPaginate": {
+                        "sNext": "<i class='fa fa-chevron-right'></i>",
+                        "sPrevious": "<i class='fa fa-chevron-left'></i>"
+                    }
+                },
+                "aoColumnDefs": [
+                    {
+                        "aTargets": [0, 2, 3, 4 ,5],
+                        "bSortable": false,
+                        "sClass": "text-center"
+                    },
+                ],
+                "columns": [
+                    { "data": "NumericalOrder" },
+                    { "data": "ITSupporterName" },
+                    { "data": "Username" },
+                    { "data": "Telephone" },
+                    { "data": "IsOnline" },
+                    {
+
+                        "aTargets": [5],
+                        "mRender": function (data, type, full) {
+                            var view = ' <button type="button" class="btn btn-info fa fa-eye" data-toggle="modal" data-target="" onclick="getData(' + full.ITSupporterId + ');getDataExp(' + full.ITSupporterId + ')"></button>';
+                            var edit = ' <button type="button" class="btn btn-warning fa fa-gears" data-toggle="modal" data-target="" onclick="getDataEdit(' + full.ITSupporterId + ')"></button>';
+                            var del = ' <button type="button" class="btn btn-danger fa fa-trash" data-toggle="modal" data-target="" onclick="removeITSup(' + full.ITSupporterId + ')"></button>';
+                            return view + " " + edit + " " + del;
+                        }
+                    },
+                ],
+                "bAutoWidth": false,
+            });
+        }
+
+        function initServiceDatatable(data) {
+            if (data == null) {
+                $('#service-table').dataTable().fnClearTable();
+            }
+            $("#service-table").dataTable().fnDestroy();
+            $("#service-table").dataTable({
+                stateSave: true,
+                "bFilter": false,
+                "bSort": false,
+                "data": data,
+                "bRetrieve": true,
+                "bScrollCollapse": true,
+                "bProcessing": true,
+                "oLanguage": {
+                    "sSearch": "Tìm kiếm:",
+                    "sSearchPlaceholder": "Thành phần con",
+                    "sZeroRecords": "Không có dữ liệu phù hợp",
+                    "sInfo": "",
+                    "sEmptyTable": "Không có dữ liệu",
+                    "sInfoFiltered": " - lọc ra từ _MAX_ dòng",
+                    "sLengthMenu": "",
+                    "sProcessing": "Đang xử lý...",
+                    "oPaginate": {
+                        "sNext": "<i class='fa fa-chevron-right'></i>",
+                        "sPrevious": "<i class='fa fa-chevron-left'></i>"
+                    }
+                },
+                "aoColumnDefs": [
+                    {
+                        "aTargets": [0, 2],
+                        "bSortable": false,
+                        "sClass": "text-center"
+                    },
+                ],
+                "columns": [
+                    { "data": "ServiceITSupportName" },
+                    { "data": "MonthExperience" },
+                    {
+                        "aTargets": [2],
+                        "mRender": function (data, type, full2) {
+                            //var edit = ' <button type="button" class="btn btn-warning fa fa-pencil" data-toggle="modal" data-target="" onclick="getDataEditSkill(' + full2.ServiceITSupportId + ')"></button>';
+                            var del = ' <button type="button" class="btn btn-danger fa fa-trash" data-toggle="modal" data-target="" onclick="removeSkill(' + full2.ServiceITSupportId + ')"></button>';
+                            //return edit + " " + del;
+                            return del;
+                        }
+                    },
+                ],
+                "bAutoWidth": false,
+            });
+        }
+        function hideCreateServiceModal() {
+            $("#CreateServiceModal").modal("hide");
+        }
+        function hideUpdateServiceModal() {
+            $("#UpdateServiceModal").modal("hide");
+        }
+        function showCreateModal() {
+            $('#CreateModal').modal('show');
+        }
+        function showCreateServiceModal() {
+            $('#CreateServiceModal').modal('show');
+            //$('#CreateServiceModal').attr('style', 'width:45%!important;margin-left:27,5%');
+        }
+        function clearModal() {
+            $('#CreateModal').on('hidden.bs.modal', function (e) {
+                $(this)
+                    .find("input,textarea,select")
+                    .val('')
+                    .end()
+                    .find("input[type=checkbox], input[type=radio]")
+                    .prop("checked", "")
+                    .end();
+            })
+        }
+
+        function getData(idd) {
+            $.ajax({
+                url: '@Url.RouteUrl(new {action = "ViewProfileITSupporter", controller = "ITSupporter" })',
+
+                data: {
+                    itSupporter_id: idd
+                },
+                type: 'GET',
+                dataType: 'json',
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {
+                    $("#ITSupNameV").text(data.result.ObjReturn.ITSupporterName);
+                    $("#ITPhoneV").text(data.result.ObjReturn.Telephone);
+                    $("#ITUsernameV").text(data.result.ObjReturn.Username);
+                    //$("#ITPassV").text(data.result.ObjReturn.Password);
+                    $("#ITEmailV").text(data.result.ObjReturn.Email);
+                    $("#ITAddressV").text(data.result.ObjReturn.Address);
+
+                }
+                });
+            $('#ViewModal').modal('show');
+        }
+        function getDataExp(idd) {
+            $.ajax({
+                url: '@Url.RouteUrl(new {action = "ViewSkillITSupporter", controller = "ITSupporter" })',
+
+                data: {
+                    itSupporter_id: idd
+                },
+                type: 'GET',
+                dataType: 'json',
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {
+                    var result = "";
+                    var len = data.result.ObjReturn.length;
+                    for (var i = 0; i < len; i++) {
+                        result += data.result.ObjReturn[i].ServiceITSupportName+", " + data.result.ObjReturn[i].MonthExperience + " | ";
+                    }
+                    $("#ITExpV").text(result);
+                }
+            });
+        }
+        function showService() {
+            $('#ser')
+                    .find('option')
+                    .remove()
+                    .end();
+            $.ajax({
+                type: 'GET',
+                url: '@Url.RouteUrl(new {action = "GetAllServiceITSupport", controller = "ServiceITSupport" })',
+                data: {
+                },
+
+                dataType: 'json',
+                contentType: "application/json; charset=utf-8",
+                success: function(data) {
+                    var len = data.result.ObjReturn.length;
+                    var html = '';
+                    for (var i = 0; i < len; i++) {
+                        html += '<option value="' +
+                            data.result.ObjReturn[i].ServiceITSupportId +
+                            '">' +
+                            data.result.ObjReturn[i].ServiceName +
+                            '</option>';
+                    }
+                    $('#ser').append(html);
+                }
+            });
+        }
+        function showRole() {
+            $('#comboRole')
+                .find('option')
+                .remove()
+                .end();
+            $.ajax({
+                type: 'GET',
+                url: '@Url.Action("GetAllRole", "Role")',
+                data: {
+                },
+
+                dataType: 'json',
+                contentType: "application/json; charset=utf-8",
+                success: function(data) {
+                    var obj = data.result.ObjReturn;
+                    var html = '<option value="' +
+                            obj[1].RoleId +
+                            '">' +
+                            obj[1].RoleName
+                            '</option>';
+                    $('#comboRole').append(html);
+                }
+            });
+        }
+        function showRoleE(id) {
+            $('#comboRoleEdit')
+                .find('option')
+                .remove()
+                .end();
+            $.ajax({
+                type: 'GET',
+                url: '@Url.Action("ViewProfileITSupporter", "ITSupporter")',
+                data: {
+                    itSupporter_id: id
+                },
+
+                dataType: 'json',
+                contentType: "application/json; charset=utf-8",
+                success: function(data) {
+                    var obj = data.result.ObjReturn;
+                    var html = '<option value="' +
+                            obj.RoleId +
+                            '">' +
+                            obj.RoleName
+                            '</option>';
+                    $('#comboRoleEdit').append(html);
+                }
+            });
+        }
+
+        function getDataEdit(id) {
+            showRoleE(id);
+            $.ajax({
+                url: '@Url.RouteUrl(new {action = "ViewProfileITSupporter", controller = "ITSupporter" })',
+
+                data: {
+                    itSupporter_id: id
+                },
+                type: 'GET',
+                dataType: 'json',
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {
+                    $("#userNameEUp").val(data.result.ObjReturn.Username);
+                    $("#idAdd").val(data.result.ObjReturn.ITSupporterId);
+                    var idEdit = data.result.ObjReturn.ITSupporterId;
+                    $("#userNameE").val(data.result.ObjReturn.Username);
+                    $("#passE").val(data.result.ObjReturn.Password);
+                    $("#nameE").val(data.result.ObjReturn.ITSupporterName);
+                    $("#phoneE").val(data.result.ObjReturn.Telephone);
+                    $("#emailE").val(data.result.ObjReturn.Email);
+                    $("#addressE").val(data.result.ObjReturn.Address);
+                    loadSkill(idEdit);
+                }
+            });
+            $('#EditModal').modal('show');
+
+        }
+
+        function AddSkill(id) {
+            var idEdit = $('#idAdd').val()
+            var empObj = {
+                ITSupporterId: $('#idAdd').val(),
+                ServiceITSupportId: $('#ser').val(),
+                MonthExperience: $('#monthExp').val(),
+            }
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("AddSkill", "ITSupporter")',
+                data: JSON.stringify(empObj),
+
+                dataType: 'json',
+                contentType: "application/json; charset=utf-8",
+                success: function(data) {
+                    $('#CreateModal').modal('hide');
+                        if (!data.result.IsError) {
+                            swal(data.result.SuccessMessage, "", "success");
+                        }
+                        else
+                            swal(data.result.WarningMessage, "", "error");
+                    loadSkill(idEdit);
+                }
+            });
+        }
+        function removeSkill(id) {
+            swal({
+                title: 'Bạn có Chắc Chắn Muốn Xóa?',
+                text: "Dữ Liệu Đã Xóa Không Thể Hoàn Lại!",
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                cancelButtonText: 'Quay Lại',
+                confirmButtonText: 'Chấp Nhận Xóa!'
+            }).then(function () {
+                deleteSkillOfITSup();
+                swal(
+                    'Đã Xóa!',
+                    'Dữ Liệu Của Bạn Đã Được Xóa.',
+                    'success'
+                )
+            });
+            $('#idSerRemove').val(id);
+        }
+
+        function deleteSkillOfITSup() {
+            var idEdit = $('#idAdd').val();
+            var itsup_idd = $('#idAdd').val();
+            var skill_id = $('#idSerRemove').val();
+            $.ajax({
+                type: 'GET',
+                url: '@Url.Action("RemoveSkill", "ITSupporter")',
+                data: {
+                    itsupporterId: itsup_idd,
+                    serviceITSupportId: skill_id
+                },
+
+                dataType: 'json',
+                contentType: "application/json; charset=utf-8",
+                success: function(data) {
+                    loadSkill(idEdit);
+                }
+            });
+        }
+        function UpdateITSup() {
+            if ($('#userNameE').val() == "") {
+                swal("Tên đăng nhập không được trống", "", "error");
+                return;
+            }
+            if ($('#userNameE').val().length > 50) {
+                swal("Tên đăng nhập không được quá 50 ký tự", "", "error");
+                return;
+            }
+          
+            if ($('#nameE').val() == "") {
+                swal("Họ và tên không được trống", "", "error");
+                return;
+            }
+            if ($('#nameE').val().length > 50) {
+                swal("Họ và tên không được quá 50 ký tự", "", "error");
+                return;
+            }
+            if ($('#phoneE').val() == "") {
+                swal("Số điện thoại không được trống", "", "error");
+                return;
+            }
+            if (!$('#phoneE').val().match("[0-9]{10}")) {
+                swal("Số điện thoại sai định dạng", "", "error");
+                return;
+            }
+            if ($('#phoneE').val().length > 10 || $('#phoneE').val().length < 10) {
+                swal("Số điện thoại chỉ được 10 số", "", "error");
+                return;
+            }
+            if ($('#emailE').val() == "") {
+                swal("Email không được trống", "", "error");
+                return;
+            }
+            if ($('#addressE').val() == "") {
+                swal("Địa chỉ không được trống", "", "error");
+                return;
+            }
+            else {
+                var empObj = {
+                ITSupporterId: $('#idAdd').val(),
+                RoleId: $('#comboRoleEdit').val(),
+                Username: $('#userNameE').val(),
+                Password: $('#passE').val(),
+                ITSupporterName: $('#nameE').val(),
+                Telephone: $('#phoneE').val(),
+                Email: $('#emailE').val(),
+                Address: $('#addressE').val(),
+                OldUsername: $('#userNameEUp').val(),
+            }
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("UpdateITSup", "ITSupporter")',
+                data: JSON.stringify(empObj),
+
+                dataType: 'json',
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {
+                    if (data.result.IsError == false) {
+                        $('#EditModal').modal('hide');
+                        loadITSup();
+                        swal(data.result.SuccessMessage, "", "success");
+                    }
+                    else
+                        swal(data.result.WarningMessage, "", "error");
+                }
+            });
+            }
+        }
+
+        function CreateITSup() {
+            if ($('#userNameC').val() == "") {
+                swal("Tên đăng nhập không được trống","","error");
+                return;
+            }
+            if ($('#userNameC').val().length > 50) {
+                swal("Tên đăng nhập không được quá 50 ký tự", "", "error");
+                return;
+            }
+            if ($('#passC').val() == "") {
+                swal("Mật khẩu không được trống", "", "error");
+                return;
+            }
+            if ($('#passC').val().length > 50) {
+                swal("Mật khẩu không được quá 50 ký tự", "", "error");
+                return;
+            }
+            if ($('#nameC').val() == "") {
+                swal("Họ và tên không được trống", "", "error");
+                return;
+            }
+            if ($('#nameC').val().length > 50) {
+                swal("Họ và tên không được quá 50 ký tự", "", "error");
+                return;
+            }
+            if ($('#phoneC').val() == "") {
+                swal("Số điện thoại không được trống", "", "error");
+                return;
+            }
+            if (!$('#phoneC').val().match("[0-9]{10}")) {
+                swal("Số điện thoại sai định dạng", "", "error");
+                return;
+            }
+            if ($('#emailC').val() == "") {
+                swal("Email không được trống", "", "error");
+                return;
+            }
+            if ($('#addressC').val() == "") {
+                swal("Địa chỉ không được trống", "", "error");
+                return;
+            }
+            else {
+                 var empObj = {
+                RoleId: $('#comboRole').val(),
+                Username: $('#userNameC').val(),
+                Password: $('#passC').val(),
+                ITSupporterName: $('#nameC').val(),
+                Telephone: $('#phoneC').val(),
+                Email: $('#emailC').val(),
+                Address: $('#addressC').val(),
+            }
+             $.ajax({
+                type: 'POST',
+                url: '@Url.Action("CreateITSuport", "ITSupporter")',
+                data: JSON.stringify(empObj),
+
+                dataType: 'json',
+                contentType: "application/json; charset=utf-8",
+                success: function(data) {
+                    $('#CreateModal').modal('hide');
+                        if (data.result.IsError == false) {
+                            swal(data.result.SuccessMessage, "", "success");
+                            location.reload();
+                        }
+                        else
+                            swal(data.result.WarningMessage, "", "error");
+                    loadITSup();
+                }
+            });
+            }
+        }
+        function removeITSup(id) {
+            swal({
+                title: 'Bạn có Chắc Chắn Muốn Xóa?',
+                text: "Dữ Liệu Đã Xóa Không Thể Hoàn Lại!",
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                cancelButtonText: 'Quay Lại',
+                confirmButtonText: 'Chấp Nhận Xóa!'
+            }).then(function () {
+                deleteITSup();
+            });
+            $('#idAdd').val(id);
+        }
+
+        function deleteITSup() {
+            var itsup_idd = $('#idAdd').val();
+            $.ajax({
+                type: 'GET',
+                url: '@Url.Action("RemoveITSuporter", "ITSupporter")',
+                data: {
+                    itsupporterId: itsup_idd,
+                },
+
+                dataType: 'json',
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {
+                    swal(
+                        'Đã Xóa!',
+                        'Dữ Liệu Của Bạn Đã Được Xóa.',
+                        'success'
+                    )
+                    loadITSup();
+                }
+            });
+        }
+
+    </script>
+}

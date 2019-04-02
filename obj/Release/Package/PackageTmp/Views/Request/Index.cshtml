@@ -1,0 +1,1082 @@
+﻿<input type="hidden" id="agencyRequest" />
+<input type="hidden" id="requestStatus" />
+<div class="container">
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header text-center">
+                    <h4 class="modal-title w-100 font-weight-bold">Request Detail</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>
+                        <b>RequestId:</b><br>
+                    <p class="rqID"></p>
+                    <p>
+                        <b>RequestName:</b><br>
+                    <p class="rqName"></p>
+                    <p>
+                        <b>Date:</b><br>
+                    <p class="rqCD"></p>
+                    <p>
+                        <b>AgencyName:</b><br>
+                    <p class="rqAN"></p>
+                    <p>
+                        <b>ITName:</b><br>
+                    <p class="rqIT"></p>
+                    <p>
+                        <b>Issue Name:</b><br>
+                    <p class="rqIN"></p>
+
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+<input type="hidden" id="companyHidden" />
+<form onsubmit="createRequest(); return false">
+    <div class="container">
+        <!-- Modal -->
+        <div class="modal fade2" id="createModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3 class="modal-title"><b>Tạo sự cố mới</b></h3>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <input id="idCom" type="hidden" />
+                            <input id="idAgency" type="hidden" />
+                            <div class="col-md-12">
+                                <label>Chi Nhánh:</label>
+                                <select class="form-control select2" type="button" style="width: 100%;" id="comboAgency" onchange="getSers(); activeSer();"></select>
+                            </div>
+                            <div class="col-md-12" style="margin-top:10px">
+                                <label>Danh mục:</label>
+                                <select type="button" class="form-control select2" disabled="true" style="width: 100%;" id="comboSerName" onchange="getSerItems(); activeSerItems();"></select>
+                            </div>
+                            <input id="idSer" type="hidden" />
+                            <div class="col-md-6" style="margin-top:10px">
+                                <label>Hiện tượng:</label>
+                                <select class="form-control select2" type="button" disabled="true" style="width: 99%;" id="comboSerItem" onchange="getDevice(); activeDevice(); getPriority(); activePriority();"></select>
+                            </div>
+                            <div class="col-md-6" style="margin-top:10px">
+                                <label>Độ Ưu Tiên:</label>
+                                <select class="form-control select2" type="button" disabled="true" style="width: 99%;float:right;" id="comboPriority">
+                                </select>
+                            </div>
+                            <div class="col-md-12" style="margin-top:10px">
+                                <label>Thiết Bị:</label>
+                                <select multiple class="form-control select2" disabled="true" type="button" style="width: 100%;" id="comboDevices"></select>
+                            </div>
+                            <div class="col-md-12" style="margin-top:10px">
+                                <label>Số Điện Thoại:</label>
+                                <input id="PhoneC" type="text" disabled="disabled" class="form-control" required>
+                            </div>
+                            <div class="col-md-12" style="margin-top:10px">
+                                <label>Mô Tả hiện tượng:</label>
+                                <textarea id="DescripC" class="form-control" rows="3" placeholder="Ví dụ: mất sóng wifi tầng trệt, khó truy cập..."></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">Tạo Mới</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="clearModal()">Đóng</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+<form onsubmit="updateRequest(); return false">
+    <div class="modal fade" id="EditModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title"><b>Cập nhật thông tin</b></h3>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <input id="idAgencyE" type="hidden" />
+                        <div class="col-md-12">
+                            <label>Chi Nhánh:</label>
+                            <input class="form-control" type="button" disabled="disabled" style="width: 100%;text-align: left;" id="comboAgencyE" onchange="getSers()"></input>
+                        </div>
+                        <div class="col-md-12" style="margin-top:10px">
+                            <label>Danh mục:</label>
+                            <input class="form-control" type="button" disabled="disabled" style="width: 100%;text-align: left;" id="comboSerNameE" onchange="getSerItems()"></input>
+                        </div>
+                        <div class="col-md-12" style="margin-top:10px">
+                            <label>Hiện tượng:</label>
+                            <input class="form-control" type="button" disabled="disabled" style="width: 99%;text-align: left;" id="comboSerItemE" onchange="getDevice()"></input>
+                        </div>
+                        <div class="col-md-6" style="margin-top:10px">
+                            <label>Trạng Thái:</label>
+                            <select class="form-control select2" type="button" style="width: 99%;float:right;" id="comboStatusE">
+                                <option value="0">--Chọn trạng thái--</option>
+                                <option value="5">Tạo mới</option>
+                                <option value="1">Chờ nhân viên xử lý</option>
+                                <option value="3">Hoàn thành</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6" style="margin-top:10px">
+                            <label>Độ Ưu Tiên:</label>
+                            <select class="form-control select2" type="button" style="width: 99%;float:right;" id="comboPriorityE">
+                                <option value="0">--Chọn độ ưu tiên--</option>
+                                <option value="1">Thấp</option>
+                                <option value="2">Trung bình</option>
+                                <option value="3">Cao</option>
+                            </select>
+                        </div>
+                        <div class="col-md-12" style="margin-top:10px">
+                            <label>Thiết Bị:</label>
+                            <input class="form-control" type="button" disabled="disabled" style="width: 100%;text-align: left;" id="comboDevicesE">
+                        </div>
+                        <div class="col-md-12" style="margin-top:10px">
+                            <label>Số Điện Thoại:</label>
+                            <input id="PhoneE" class="form-control" disabled="disabled" type="button" style="width: 100%;text-align: left;" required>
+                        </div>
+                        <div class="col-md-12" style="margin-top:10px">
+                            <label>Mô Tả hiện tượng:</label>
+                            <textarea id="DescripE" class="form-control" disabled="disabled" rows="3" placeholder="Ví dụ: mất sóng wifi tầng trệt, khó truy cập..."></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">Cập nhật</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="clearModal()">Đóng</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+<div class="row col-md-12">
+    <h3 class="city">Quản lý sự cố</h3>
+</div>
+<div class="row col-md-12">
+    <div class="col-md-3 col-sm-6 col-xs-12">
+        <div class="info-box">
+            <span class="info-box-icon bg-gray"><i class="fa fa-cogs" aria-hidden="true"></i></span>
+
+            <div class="info-box-content">
+                <span class="info-box-text" style="width: 200px; height:40px;">Tạo mới</span>
+                <span class="info-box-number" id="new">0</span>
+            </div>
+            <!-- /.info-box-content -->
+        </div>
+        <!-- /.info-box -->
+    </div>
+    <!-- /.col -->
+    <div class="col-md-3 col-sm-6 col-xs-12">
+        <div class="info-box">
+            <span class="info-box-icon bg-yellow"><i class="fa fa-wrench" aria-hidden="true"></i></span>
+
+            <div class="info-box-content">
+                <span class="info-box-text" style="width: 200px; height:40px;">Đang và chờ xử lý</span>
+                <span class="info-box-number" id="processing">0</span>
+            </div>
+            <!-- /.info-box-content -->
+        </div>
+        <!-- /.info-box -->
+    </div>
+    <!-- /.col -->
+    <!-- fix for small devices only -->
+    <div class="clearfix visible-sm-block"></div>
+
+    <div class="col-md-3 col-sm-6 col-xs-12">
+        <div class="info-box">
+            <span class="info-box-icon bg-green"><i class="fa fa-check" aria-hidden="true"></i></span>
+
+            <div class="info-box-content">
+                <div style="height:40px">
+                    <span class="info-box-text" style="width: 200px">Hoàn thành và </span>
+                    <span class="info-box-text" style="width: 200px">chờ xác nhận</span>
+                </div>
+                <span class="info-box-number" id="done">0</span>
+            </div>
+            <!-- /.info-box-content -->
+        </div>
+        <!-- /.info-box -->
+    </div>
+    <!-- /.col -->
+    <div class="col-md-3 col-sm-6 col-xs-12">
+        <div class="info-box">
+            <span class="info-box-icon bg-red"><i class="fa fa-times" aria-hidden="true"></i></span>
+
+            <div class="info-box-content">
+                <span class="info-box-text" style="width: 200px; height:40px;">Hủy và chờ hủy</span>
+                <span class="info-box-number" id="cancel">0</span>
+            </div>
+            <!-- /.info-box-content -->
+        </div>
+        <!-- /.info-box -->
+    </div>
+    <!-- /.col -->
+</div>
+<style>
+    .city {
+        background-color: azure;
+        color: black;
+        padding: 1%;
+        border-left: solid cadetblue;
+        width: 100%;
+    }
+</style>
+
+<!-- Datatable -->
+<div class="row col-md-12">
+    <h3 class="city">Sự cố đã báo</h3>
+</div>
+<div class="row col-md-12">
+    <div class="col-md-4 col-sm-6 col-xs-12">
+        <b>Lọc theo thời gian:</b><br>
+        <div class="input-group">
+            <div class="input-group-addon">
+                <i class="fa fa-calendar"></i>
+            </div>
+            <input type="text" class="form-control pull-right" id="reservation">
+        </div>
+    </div>
+    <div class="col-md-4 col-sm-6 col-xs-12">
+        <b>Lọc theo công ty:</b><br>
+        <select class="form-control select2" type="button" id="requestCompany" style="width:100%; margin-bottom:15px;"></select>
+    </div>
+    <div class="col-md-4 col-sm-6 col-xs-12">
+        <b>Lọc theo loại sự cố:</b><br>
+        <select class="form-control select2" type="button" id="requestServiceItem" style="width:100%; margin-bottom:15px;"></select>
+    </div>
+</div>
+<div class="row col-md-12">
+    <!-- Custom Tabs -->
+    <div class="nav-tabs-custom">
+        <ul class="nav nav-tabs" id="curent_tab">
+            <li class="active"><a href="#tab_1" data-toggle="tab" onclick="setValue(5)"><span class="label label-default">Sự cố mới</span></a></li>
+            <li><a href="#tab_1" data-toggle="tab" onclick="setValue(2)"><span class="label label-warning">Sự cố đang và chờ xử lý</span></a></li>
+            <li><a href="#tab_1" data-toggle="tab" onclick="setValue(3)"><span class="label label-success">Sự cố hoàn thành và chờ xác nhận</span></a></li>
+            <li><a href="#tab_1" data-toggle="tab" onclick="setValue(4)"><span class="label label-danger">Sự cố hủy và chờ hủy</span></a></li>
+            <li class="pull-right"><a onclick="showCreateModal()" class="btn btn-primary"><i class="fa fa-plus"></i> Tạo sự cố</a></li>
+            @*<button type="button" class="btn btn-primary fa fa-plus" data-toggle="modal" data-target="" onclick="showCreateModal()"><font face="verdana"> Tạo Sự Cố</button>*@
+        </ul>
+        <div class="tab-content">
+            <div class="tab-pane active" id="tab_1">
+                <table id="detail-table" class="table table-hover" cellspacing="0" style="table-layout: auto">
+                    <thead>
+                        <tr>
+                            <th><label>STT</label></th>
+                            <th><label>Tên Sự Cố</label></th>
+                            <th><label>Thời gian</label></th>
+                            <th><label>Tạo bởi</label></th>
+                            <th><label>Độ ưu tiên</label></th>
+                            <th><label>Trạng thái</label></th>
+                            <th><label>Xử lý bởi/Tùy chọn</label></th>
+                            <th><label>Cập nhật</label></th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+            <!-- /.tab-pane -->
+            <div class="tab-pane" id="tab_2">
+                Nội dung của tab 2
+            </div>
+
+            <!-- /.tab-pane -->
+        </div>
+        <!-- /.tab-content -->
+    </div>
+    <!-- nav-tabs-custom -->
+</div>
+
+<link href="//cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css" rel="stylesheet" />
+@section scripts {
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="https://cdn.rawgit.com/asvd/dragscroll/master/dragscroll.js"></script>
+    <script src="~/AdminLTE/bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
+    <script src="//cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" src="~/AdminLTE/bower_components/select2/dist/js/select2.js"></script>
+    <link href="~/AdminLTE/bower_components/select2/dist/css/select2.css" rel="stylesheet" />
+    <link rel="stylesheet" href="~/AdminLTE/bower_components/bootstrap-daterangepicker/daterangepicker.css">
+    <script src="~/AdminLTE/bower_components/select2/dist/js/select2.js"></script>
+    <script src="~/AdminLTE/bower_components/moment/min/moment.min.js"></script>
+    <script src="~/AdminLTE/bower_components/bootstrap-daterangepicker/daterangepicker.js"></script>
+
+
+    <script>
+        $(document).ready(function () {
+            $('#curent_tab').val(5);
+            showCompany();
+            showServiceItems();
+            showAgency();
+            //loadRequest();
+            //loadRequestStatistic();
+
+            startRefresh();
+        });
+
+        $('#comboDevices').select2({
+            dropdownParent: $('#createModal')
+        });
+        $('#comboAgency').select2({
+            dropdownParent: $('#createModal')
+        });
+        $('#comboSerName').select2({
+            dropdownParent: $('#createModal')
+        });
+        $('#comboSerItem').select2({
+            dropdownParent: $('#createModal')
+        });
+        $('#comboPriority').select2({
+            dropdownParent: $('#createModal')
+        });
+
+        $(function () {
+
+            $('#reservation').daterangepicker({
+
+                locale: {
+                    format: 'DD/MM/YYYY',
+                    applyLabel: 'Chọn',
+                    fromLabel: 'From',
+                    toLabel: 'To',
+                    customRangeLabel: 'Custom Range',
+                    daysOfWeek: ['CN', 'Hai', 'Ba', 'Tư', 'Năm', 'Sáu', 'Bảy'],
+                    monthNames: ['Tháng 1', 'Tháng 2', 'Tháng 3', 'Tháng 4', 'Tháng 5', 'Tháng 6', 'Tháng 7', 'Tháng 8', 'Tháng 9', 'Tháng 10', 'Tháng 11', 'Tháng 12'],
+                    firstDay: 1,
+                    buttonClasses: ['btn btn-default'],
+                    applyClass: 'btn-small btn-primary',
+                    cancelClass: 'btn-small',
+                }
+            });
+        });
+
+
+        function startRefresh() {
+            setTimeout(startRefresh, 1000);
+            loadRequest();
+            loadRequestStatistic();
+        }
+        function activeSer() {
+            $('#comboSerName').prop('disabled', false);
+        }
+        function activeSerItems() {
+            $('#comboSerItem').prop('disabled', false);
+        }
+        function activeDevice() {
+            $('#comboDevices').prop('disabled', false);
+        }
+        function activePriority() {
+            $('#comboPriority').prop('disabled', false);
+        }
+        function setValue(tabValue) {
+            $('#curent_tab').val(tabValue);
+        }
+        //var isWaitingHeroAccept = false;
+        //var currentRequestId = 0;
+        function loadRequestStatistic() {
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("GetRequestStatistic", "Request")',
+                data: {
+                },
+                success: function(result) {
+                    var statusList = result.result.ObjReturn;
+                    var i;
+                    for (i = 0; i < statusList.length; ++i) {
+                        if (statusList[i].StatusId === 1) {
+                                $('#new').text(statusList[i].NumberOfStatus);
+                        }
+                        else if (statusList[i].StatusId === 2) {
+                            $('#processing').text(statusList[i].NumberOfStatus);
+                        }
+                        else if (statusList[i].StatusId === 3) {
+                            $('#done').text(statusList[i].NumberOfStatus);
+                        }
+                        else if (statusList[i].StatusId === 4) {
+                            $('#cancel').text(statusList[i].NumberOfStatus);
+                        }
+                    }
+                },
+                error: function(error) {
+                    //showMessage("Cõ lỗi xảy ra. Vui lòng thử lại sau.", "error", "OK");
+                }
+            });
+        }
+
+        function loadRequest() {
+            var companyId;
+            var serviceItemId;
+            var dateRange = $('#reservation').val().split("-");
+            var startDate = dateRange[0];
+            var endDate = dateRange[1];
+            if ($("#requestCompany").val() != null) {
+                companyId = $("#requestCompany").val();
+            } else { companyId = 0 }
+            if ($("#requestServiceItem").val() != null) {
+                serviceItemId = $("#requestServiceItem").val();
+            } else { serviceItemId = 0 }
+            var status = $('#curent_tab').val();
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("GetAllRequest", "Request")',
+                data: {
+                    companyId: companyId,
+                    serviceItemId: serviceItemId,
+                    status: status
+                    //start: startDate,
+                    //end: endDate
+                },
+                success: function (result) {
+                    if (!result.result.ObjReturn != null)
+                        initDatatable(result.result.ObjReturn);
+                },
+                error: function(error) {
+                   // showMessage("Cõ lỗi xảy ra. Vui lòng thử lại sau.", "error", "OK");
+                }
+            });
+        }
+
+    function LocSuCo() {
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("GetAllRequest", "Request")',
+                data: {
+
+                },
+                success: function(result) {
+                    initDatatable(result.result.ObjReturn);
+                },
+                error: function(error) {
+                   // showMessage("Cõ lỗi xảy ra. Vui lòng thử lại sau.", "error", "OK");
+                }
+            });
+        }
+
+        function showCompany() {
+            $('#requestCompany')
+                .find('option')
+                    .remove()
+                    .end();
+            $.ajax({
+                type: 'GET',
+                url: '@Url.Action("GetAllCompany", "Company")',
+                data: {
+                },
+
+                dataType: 'json',
+                contentType: "application/json; charset=utf-8",
+                success: function(data) {
+                    var len = data.result.ObjReturn.length;
+                    var html = '<option value="0">--Lọc theo công ty--</option>';
+                    for (var i = 0; i < len; i++) {
+                        html += '<option value="' +
+                            data.result.ObjReturn[i].CompanyId +
+                            '">' +
+                            data.result.ObjReturn[i].CompanyName +
+                            '</option>';
+                    }
+                    $('#requestCompany').append(html);
+                }
+            });
+        }
+        function showServiceItems() {
+            $('#requestServiceItem')
+                    .find('option')
+                    .remove()
+                    .end();
+            $.ajax({
+                type: 'GET',
+                url: '@Url.Action("GetAllServiceItemAll", "ServiceItem")',
+                data: {
+                },
+
+                dataType: 'json',
+                contentType: "application/json; charset=utf-8",
+                success: function(data) {
+                    var len = data.result.ObjReturn.length;
+                    var html = '<option value="0">--Lọc theo hiện tượng--</option>';
+                    for (var i = 0; i < len; i++) {
+                        html += '<option value="' +
+                            data.result.ObjReturn[i].ServiceItemId +
+                            '">' +
+                            data.result.ObjReturn[i].ServiceItemName +
+                            '</option>';
+                    }
+                    $('#requestServiceItem').append(html);
+                }
+            });
+        }
+
+        function initDatatable(data) {
+            $("#detail-table").dataTable().fnDestroy();
+            $("#detail-table").dataTable({
+                stateSave: true,
+                "bFilter": true,
+                "bSort": false,
+                "data": data,
+                "bRetrieve": true,
+                "bScrollCollapse": true,
+                "bProcessing": true,
+                "searching": false,
+                "oLanguage": {
+                    //"sSearch": "Tìm kiếm:",
+                    //"sSearchPlaceholder": "",
+                    "sZeroRecords": "Không có dữ liệu phù hợp",
+                    "sInfo": "Hiển thị từ _START_ đến _END_ trên tổng số _TOTAL_ dòng",
+                    "sEmptyTable": "Không có dữ liệu",
+                    "sInfoFiltered": " - lọc ra từ _MAX_ dòng",
+                    "sLengthMenu": "Hiển thị _MENU_ dòng",
+                    "sProcessing": "Đang xử lý...",
+                    "oPaginate": {
+                        "sNext": "<i class='fa fa-chevron-right'></i>",
+                        "sPrevious": "<i class='fa fa-chevron-left'></i>"
+                    }
+                },
+                "aoColumnDefs": [
+                    {
+                        "aTargets": [0, 2, 3, 4, 5, 6, 7],
+                        "bSortable": false,
+                        "sClass": "text-center",
+                    },
+
+
+                    //{
+                    //    "aTargets": [7],
+                    //    "mRender": function (data, type, row) {
+                    //        var edit = "<a title='Chỉnh sửa' class='btn btn-sm btn-primary' onclick='callShowEditModal(" + data + ")'><i class='glyphicon glyphicon-pencil'></i></a>";
+                    //        var del = "<a title='Xóa' class='btn btn-sm btn-danger' onclick='deleteElementChil(" + data + ")'><i class='glyphicon glyphicon-trash'></i></a>";
+                    //        return edit + " " + del;
+                    //    },
+                    //}
+                ],
+                "columns": [
+                    { "data": "NumberOfRecord" },
+                    { "data": "RequestName" },
+                    { "data": "CreateDate" },
+                    { "data": "AgencyName" },
+                    //{ "data": "StatusName" },
+                    {
+                        "aTargets": [4],
+                        "mRender": function (data, type, full) {
+                            if (full.Priority === "Cao") {
+                                var Priority = '<span class = "label label-danger">' + full.Priority + '</span>';
+                                //var Normal = ' <button type="button" class="btn btn-warning fa fa-wrench" data-toggle="modal" onclick="setPriority(' + full.RequestId + ', 2)"></button>';
+                                //var Non_Urgent = '<button type="button" class="btn btn-primary btn fa fa-hourglass" data-toggle="modal" onclick="setPriority(' + full.RequestId + ', 3)"></button>';
+                                //return Priority + " " + Normal + " " + Non_Urgent;
+                                return Priority;
+                            }
+                            else if (full.Priority === "Trung bình") {
+                                var Priority = '<span class = "label label-warning">' + full.Priority + '</span>';
+                                //var Urgent = '<button type="button" class="btn btn-danger glyphicon glyphicon-fire" data-toggle="modal" onclick="setPriority(' + full.RequestId + ', 1)"></button>';
+                                //var Non_Urgent = '<button type="button" class="btn btn-primary btn fa fa-hourglass" data-toggle="modal" onclick="setPriority(' + full.RequestId + ', 3)"></button>';
+                                //return Priority + " " + Urgent + " " + Non_Urgent;
+                                return Priority;
+                            }
+                            else if (full.Priority === "Thấp") {
+                                var Priority = '<span class = "label label-primary">' + full.Priority + '</span>';
+                                //var Urgent = '<button type="button" class="btn btn-danger glyphicon glyphicon-fire" data-toggle="modal" onclick="setPriority(' + full.RequestId + ', 1)"></button>';
+                                //var Normal = ' <button type="button" class="btn btn-warning fa fa-wrench" data-toggle="modal" onclick="setPriority(' + full.RequestId + ', 2)"></button>';
+                                //return Priority + " " + Urgent + " " + Normal;
+                                return Priority;
+                            }
+                            else {
+                                //var Urgent = '<button type="button" class="btn btn-danger glyphicon glyphicon-fire" data-toggle="modal" onclick="setPriority(' + full.RequestId + ', 1)"></button>';
+                                //var Normal = ' <button type="button" class="btn btn-warning fa fa-wrench" data-toggle="modal" onclick="setPriority(' + full.RequestId + ', 2)"></button>';
+                                //var Non_Urgent = '<button type="button" class="btn btn-primary btn fa fa-hourglass" data-toggle="modal" onclick="setPriority(' + full.RequestId + ', 3)"></button>';
+                                //return Urgent + " " + Normal + " " + Non_Urgent;
+                                return "";
+                                }
+                        }
+                    },
+                    {
+                        "aTargets": [5],
+                        "mRender": function (data, type, full) {
+                            if (full.StatusName === "Chờ nhân viên xử lý")
+                                return '<span class = "label label-warning">' + full.StatusName + '</span>';
+                            else if (full.StatusName === "Đang xử lý")
+                                return '<span class = "label label-primary">' + full.StatusName + '</span>';
+                            else if (full.StatusName === "Hoàn thành")
+                                return '<span class = "label label-success">' + full.StatusName + '</span>';
+                            else if (full.StatusName === "Hủy bỏ")
+                                return '<span class = "label label-danger">' + full.StatusName + '</span>';
+                            else
+                                return '<span class = "label label-default">' + full.StatusName + '</span>';
+                        }
+                    },
+
+                    {
+                        "aTargets": [6],
+                        "mRender": function (data, type, full) {
+                            if (full.StatusName === "Chờ hủy") {
+                                var del = ' <button type="button" class="btn btn-danger fa fa-close" data-toggle="modal" data-target="" onclick="removeResquest(' + full.RequestId + ')"></button>';
+                                return del;
+                            }
+                            else if (full.StatusName === "Hủy bỏ") {
+                                return '<span class = "label label-danger">Đã hủy theo yêu cầu</span>';
+                            }
+                            else if (full.StatusName === "Hoàn thành" && full.ITSupporterName === "") {
+                                return '<span class = "label label-success">Hoàn thành bởi admin</span>';
+                            }
+                            else if (full.StatusName === "Chờ xác nhận hoàn thành") {
+                                var approveDone = '<button type="button" class="btn btn-success btn fa fa-check" data-toggle="modal" data-target="" onclick="approveRequestDone(' + full.RequestId + ')"></button>'
+                                return full.ITSupporterName + " " + approveDone;
+                            }
+                            else if(full.ITSupporterName !== "") {
+                                return full.ITSupporterName;
+                            }
+                            else if (full.StatusName === "Chờ nhân viên xử lý" && full.ITSupporterName === "") {
+                                var asignHero = '<button type="button" class="btn btn-info btn fa fa-user-plus" data-toggle="modal" data-target="" onclick="asignHero(' + full.RequestId + ')"></button>'
+                                var details = '<span class = "label label-warning">Đợi nhân viên phản hồi</span>';
+                                return details + " " + asignHero;
+                            }
+                            else {
+                                //var del = ' <button type="button" class="btn btn-danger fa fa-close" data-toggle="modal" data-target="" onclick="removeResquest(' + full.RequestId + ')"></button>';
+                                return "";
+                            }
+                        }
+                    },
+                    {
+                        "aTargets": [7],
+                        "mRender": function (data, type, full) {
+                            if (full.StatusName === "Tạo mới") {
+                                //var edit = ' <button type="button" class="btn btn-warning fa fa-pencil" data-toggle="modal" data-target="" onclick="getDataEdit(' + full.RequestId + ')"></button>';
+                                var edit = '<a href="@Url.Action("EditRequest", "Request")?requestId=' + full.RequestId + '">Cập nhật</a>';
+                                return edit;
+                            } else {
+                                return "";
+                            }
+                        }
+                    },
+                ],
+                "bAutoWidth": false,
+            });
+        }
+        function showCreateModal() {
+            $('#createModal').modal('show');
+            showAgency();
+        }
+        function clearModal() {
+            $("#comboDevices").empty();
+            $('#createModal').on('hidden.bs.modal', function (e) {
+                $(this)
+                    .find("input,textarea,select")
+                    .val('')
+                    .end()
+                    .find("input[type=checkbox], input[type=radio]")
+                    .prop("checked", "")
+                    .end();
+            })
+            $('#comboSerName').empty();
+            $('#comboSerItem').empty();
+            $('#comboPriority').empty();
+            $('#comboSerName').prop('disabled', true);
+            $('#comboSerItem').prop('disabled', true);
+            $('#comboDevices').prop('disabled', true);
+            $('#comboPriority').prop('disabled', true);
+        }
+        function showAgency() {
+            $('#comboAgency')
+                .find('option')
+                .remove()
+                .end();
+            $.ajax({
+                type: 'GET',
+                url: '@Url.Action("GetAllAgency", "Agency")',
+                data: {
+                },
+                dataType: 'json',
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {
+                    var obj = data.result.ObjReturn;
+                    var html = '<option value="0">--Chọn chi nhánh--</option>';
+                    if (obj != null) {
+                        for (var i = 0; i < obj.length; i++) {
+                            html += '<option value="' +
+                                obj[i].AgencyId +
+                                '">' +
+                                obj[i].AgencyName +
+                                '</option>';
+                        }
+                    }
+                    $('#comboAgency').append(html);
+                }
+            });
+        }
+
+        function getSers() {
+            var idd = $('#comboAgency').val();
+            $('#idAgency').val(idd);
+            var id = $('#idAgency').val();
+            $.ajax({
+                url: '@Url.RouteUrl(new {action = "GetAgencyDetail", controller = "Agency"})',
+
+                data: {
+                    agency_id: id
+                },
+                type: 'GET',
+                dataType: 'json',
+                contentType: "application/json; charset=utf-8",
+                success: function(data) {
+                    $("#PhoneC").val(data.result.ObjReturn.Telephone);
+                }
+            });
+            $('#comboSerName')
+                .find('option')
+                .remove()
+                .end();
+            $.ajax({
+                type: 'GET',
+                url: '@Url.Action("GetServiceITSupportByAgencyId", "Request")',
+                data: {
+                    agencyId: id
+                },
+                dataType: 'json',
+                contentType: "application/json; charset=utf-8",
+                success: function(data) {
+                    var obj = data.result.ObjReturn;
+                    var html = '<option value="0">--Chọn danh mục--</option>';
+                    if (obj != null) {
+                        for (var i = 0; i < obj.length; i++) {
+                            html += '<option value="' +
+                                obj[i].ServiceITSupportId +
+                                '">' +
+                                obj[i].ServiceName +
+                                '</option>';
+                        }
+                    }
+                    $('#comboSerName').append(html);
+                }
+            });
+        }
+        function getSerItems() {
+            var iddS = $('#comboSerName').val();
+            $('#idSer').val(iddS);
+            var idS = $('#idSer').val();
+            $('#comboSerItem')
+                .find('option')
+                .remove()
+                .end();
+            $.ajax({
+                type: 'GET',
+                url: '@Url.Action("GetAllServiceItemByServiceId", "Request")',
+                data: {
+                    serviceId: idS
+                },
+                dataType: 'json',
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {
+                    var obj = data.result.ObjReturn;
+                    var html = '<option value="0">--Chọn hiện tượng--</option>';
+                    if (obj != null) {
+                        for (var i = 0; i < obj.length; i++) {
+                            html += '<option value="' +
+                                obj[i].ServiceItemId +
+                                '">' +
+                                obj[i].ServiceItemName +
+                                '</option>';
+                        }
+                    }
+                    $('#comboSerItem').append(html);
+                }
+            });
+        }
+        function getDevice() {
+            var idd = $('#comboAgency').val();
+            $('#idAgency').val(idd);
+            var id = $('#idAgency').val();
+            var iddS = $('#comboSerName').val();
+            $('#idSer').val(iddS);
+            var idS = $('#idSer').val();
+            $('#comboDevices')
+                .find('option')
+                        .remove()
+                        .end();
+                $.ajax({
+                type: 'GET',
+                url: '@Url.RouteUrl(new {action = "GetAllDeviceByAgencyIdAndServiceId", controller = "Request" })',
+                    data: {
+                        agencyId: id,
+                        serviceId: idS
+                    },
+                dataType: 'json',
+                contentType: "application/json; charset=utf-8",
+                success: function(data) {
+                    var len = data.result.ObjReturn.length;
+                    var html = '';
+                    for (var i = 0; i < len; i++) {
+                        html += '<option value="' +
+                            data.result.ObjReturn[i].DeviceId +
+                            '">' +
+                            data.result.ObjReturn[i].DeviceName +
+                            '</option>';
+                    }
+                    $('#comboDevices').append(html);
+                }
+            });
+        }
+        function getPriority() {
+            $('#comboPriority').empty();
+            var html = '';
+            html += '<option value="0">--Chọn độ ưu tiên--</option>' + '<option value="1">Thấp</option>' + '<option value="2">Trung bình</option>'
+                + '<option value="3">Cao</option>';
+            $('#comboPriority').append(html);
+        }
+        function asignHero(requestId) {
+            $.ajax({
+                url: '@Url.RouteUrl(new {action = "FindITSupporterByRequestId", controller = "Request"})',
+
+                data: {
+                    requestId: requestId
+                },
+                type: 'GET',
+                dataType: 'json',
+                contentType: "application/json; charset=utf-8",
+                success: function(data) {
+                    if (!data.result.IsError) {
+                        swal(data.result.SuccessMessage, "", "success");
+                       // isWaitingHeroAccept = true;
+                        //currentRequestId = requestId
+                        loadRequest();
+                        loadRequestStatistic();
+                    } else
+                        swal(data.result.WarningMessage, "", "error");
+                }
+            });
+        }
+
+        function approveRequestDone(requestId) {
+            $.ajax({
+                url: '@Url.RouteUrl(new {action = "ApproveRequestDone", controller = "Request"})',
+
+                data: {
+                    requestId: requestId
+                },
+                type: 'GET',
+                dataType: 'json',
+                contentType: "application/json; charset=utf-8",
+                success: function(data) {
+                    if (!data.result.IsError) {
+                        swal(data.result.SuccessMessage, "", "success");
+                        loadRequest();
+                        loadRequestStatistic();
+                    } else
+                        swal(data.result.WarningMessage, "", "error");
+                }
+            });
+        }
+
+        function setPriority(requestId, priority) {
+            currentRequestId = requestId
+            $.ajax({
+                url: '@Url.RouteUrl(new {action = "SetPriority", controller = "Request"})',
+
+                data: {
+                    requestId: requestId,
+                    priority: priority
+                },
+                type: 'GET',
+                dataType: 'json',
+                contentType: "application/json; charset=utf-8",
+                success: function(data) {
+                    if (!data.result.IsError) {
+                        swal(data.result.SuccessMessage, "", "success");
+                    } else
+                        swal(data.result.WarningMessage, "", "error");
+                }
+            });
+        }
+
+        function getData(id) {
+
+            $.ajax({
+                //url: '@Url.RouteUrl(new {action = "Edit", controller = "Home"})',
+                url: '@Url.RouteUrl(new {action = "GetRequestDetail", controller = "Request"})',
+
+                data: {
+                    request_id: id
+                },
+                type: 'GET',
+                dataType: 'json',
+                contentType: "application/json; charset=utf-8",
+                success: function(data) {
+                    $(".rqID").text(data.result.RequestId);
+                    $(".rqName").text(data.result.RequestName);
+                    $(".rqCD").text(data.result.CreateDate);
+                    $(".rqAN").text(data.result.AgencyName);
+                    $(".rqIT").text(data.result.ITName);
+                    $(".rqIN").text(data.result.IssueName);
+
+                }
+            });
+            $('#exampleModal').modal('show');
+        }
+        function getDataEdit(id) {
+            $.ajax({
+                url: '@Url.RouteUrl(new {action = "GetRequestById", controller = "Request" })',
+
+                data: {
+                    requestId: id
+                },
+                type: 'GET',
+                dataType: 'json',
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {
+                    $("#idAgencyE").val(id);
+                    $("#comboAgencyE").val(data.result.ObjReturn.AgencyName);
+                    $("#comboSerNameE").val(data.result.ObjReturn.RequestName);
+                    $("#comboSerItemE").val(data.result.ObjReturn.ServiceItemName);
+                    $("#comboStatusE").val(data.result.ObjReturn.RequestStatusValue);
+                    $("#comboPriorityE").val(data.result.ObjReturn.PriorityValue);
+                    var i;
+                    var devices = "";
+                    var tickets = data.result.ObjReturn.Tickets;
+                    for (i = 0; i < tickets.length; ++i) {
+                        devices += tickets[i].DeviceName + ", ";
+                    }
+                    $("#comboDevicesE").val(devices);
+                    $("#PhoneE").val(data.result.ObjReturn.AgencyTelephone);
+                    $("#DescripE").val(data.result.ObjReturn.RequestDesciption);
+                }
+            });
+            $('#EditModal').modal('show');
+        }
+
+    function createRequest() {
+        if ($('#comboAgency').val() == 0 ) {
+            swal("Vui lòng chọn chi nhánh", "", "error");
+        } else if ($('#comboSerName').val() == 0) {
+            swal("Vui lòng chọn danh mục", "", "error");
+        } else if ($('#comboSerItem').val() == 0) {
+            swal("Vui lòng chọn hiện tượng", "", "error");
+        }
+        else {
+            var deviceIds = $('#comboDevices').val();
+            var tickets = new Array();
+            for (i = 0; i < deviceIds.length; ++i) {
+                var ticket = {
+                    DeviceId: deviceIds[i],
+                    CreateBy: 'ADMIN'
+                }
+                tickets.push(ticket);
+            }
+
+            var empObj = {
+                AgencyId: $('#comboAgency').val(),
+                RequestCategoryId: 3,
+                ServiceItemId: $('#comboSerItem').val(),
+                RequestName: $("#comboAgency option:selected").text() + " - " + $("#comboSerItem option:selected").text(),
+                PriorityCreate: $('#comboPriority').val(),
+                Tickets: tickets,
+                AgencyTelephone: $('#PhoneC').val(),
+                RequestDesciption: $('#DescripC').val(),
+            }
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("CreateRequest", "Request")',
+                data: JSON.stringify(empObj),
+
+                dataType: 'json',
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {
+                    if (!data.result.isError) {
+                        clearModal();
+                        $('#createModal').modal('hide');
+                        loadRequest();
+                        swal(data.result.SuccessMessage, "", "success");
+                    }
+                    else
+                        swal(data.result.WarningMessage, "", "error");
+                }
+                });
+            }
+        }
+        function updateRequest() {
+            $.ajax({
+                url: '@Url.Action("UpdateRequest", "Request")',
+                data: {
+                    requestId: $("#idAgencyE").val(),
+                    prioryty: $('#comboPriorityE').val(),
+                    status: $('#comboStatusE').val(),
+                },
+                type: 'POST',
+
+                success: function (data) {
+                    if (!data.result.isError) {
+                        $('#EditModal').modal('hide');
+                        //loadCompanyAgency();
+                        swal(data.result.SuccessMessage, "", "success");
+                    }
+                    else
+                        swal(data.result.WarningMessage, "", "error");
+                }
+            });
+        }
+        function removeResquest(id) {
+            $.ajax({
+                type: 'GET',
+                url: '@Url.Action("GetRequestBytRequestId", "Request")',
+                data: {
+                    requestId: id
+                },
+
+                dataType: 'json',
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {
+                    $('#requestStatus').val(data.result.ObjReturn.RequestStatusId);
+                }
+            });
+            //$('#modalConfirmDelete').modal('show');
+            swal({
+                title: 'Bạn có Chắc Chắn Muốn Hủy?',
+                text: "Sự Cố Đã Hủy Không Thể Hoàn Lại!",
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                cancelButtonText: 'Quay Lại',
+                confirmButtonText: 'Chấp Nhận Hủy!'
+            }).then(function () {
+                deleteRequest();
+            });
+            $('#agencyRequest').val(id);
+
+        }
+
+        //delete agency
+        function deleteRequest() {
+            var request_idd = $('#agencyRequest').val();
+            var requestStt_idd = 4;
+            $.ajax({
+                type: 'GET',
+                url: '@Url.Action("ApproveCancelRequest", "Request")',
+                data: {
+                    request_id: request_idd,
+                    status: requestStt_idd
+                },
+
+                dataType: 'json',
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {
+                    swal(
+                        'Đã Xóa!',
+                        'Sự Cố Của Bạn Đã Được Hủy.',
+                        'success'
+                    )
+                    loadRequest();
+                }
+            });
+        }
+    </script>
+
+}
